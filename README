@@ -1,0 +1,22 @@
+Analysis Tool Breakdown
+
+There are three main analysis tools used on the iBERT Xilinx data produced by Vivado: cable eye scans, single width/amplitude
+scatter plots, and multi wide/amplitude scatter plots. The following three tools are can be found in the following directories:
+
+*Eye_Scan_Home
+    -cable eye scans: cable_Escans.py
+*Scatter_Home
+    -single scatter plots looking at width/amplitude of eye scans for individual cables: Single_Run_Scatter.py
+    -multi scatter plots looking at width/amplitude of eye scans for all cables: Multi_Run_Scatter
+
+----DATA STORAGE----
+Xilinx data captured in Vivado is stored in Infrastructure_Test_Data. Given as an example is the data captured using 6 miniDP cables used on RTM01 and RTM03 (ignored Jreverse). Inside the RTM0x directory are different group configurations that the miniDP cables were run on. DP02_JnJn_20230717 houses data where the miniDP cables were connected one-to-one (ie J1-J1, J2-J2,...) on groups 0 and 2 where was DP12_JnJn_20230717 houses data were the miniDP cables were connected one-to-one on groups 1 and 2.
+
+----Eye Scan Home----
+Eye scan home houses the analysis tool that creates the cable eye scans. This python programs looks for data in Infrastructure_Test_Data and recreates the eye scans that produced in Vivado. These eye scans are group per run (ie DP02_JnJn_20230717,...) and outputed to a pdf file that can be found in RTM0x_pdf. Since our cables have one cmd channel and four data channels, for six cables there will be 30 eye scans produced. The eye scans will include the width % and amplitude % of each eye from each data channel. To run this tool, make sure you point to the correct data directory in Infrastructure_Test_data in line 15 of cable_Escans.py. One needs to create the pdf output directory before hand, that program does not create it for you. Once that directory is created, you can point to that directory to output the eye scans pdf results in line 19.
+
+----Scatter Home ----
+Scatter home houses two tools: single scatter plots and multi scatter plots. Before running make sure you point to the correct Infrastructure_Test_data data directory in line 8. This program will create an output directory for you in line 13, you do not need to create your own like in cable_Escans. Both of these tools will split the data into 6 "chunks: seperated by dashed vertical lines. This seperation allows you to distinguish the 5 channels (cmd,d0,d1,d2,d3) for J1,J2,J3,J4,J5,J6. If you choose to not look at all six J connections, you need to adjust these vertical separators in the ax.vlines line of code found in the plots generation block.
+
+----Tools----
+Directory that contains was used to test blocks of code used in the directories described above. DP-Cable maps are also housed here as a reference if you choose to start crossing cables across the J connectors.
